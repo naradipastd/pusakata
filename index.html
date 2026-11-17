@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Pustakata: pembuat paragraf akademik berbahasa Indonesia baku dengan catatan kaki APA, MLA, Chicago, Harvard, IEEE, dan Vancouver.">
+<meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101415" media="(prefers-color-scheme: dark)">
+<title>Pustakata – Pembuat Paragraf Akademik</title>
+<style>
+:root{--bg:#f6f3ec;--bg2:#ece7da;--card:#fffdf8;--ink:#1d2327;--mut:#667078;--line:#e0d9c8;--acc:#b94a0f;--acc2:#f2b134;--accink:#fff;--warn:#fff3d6;--warnink:#6b4a00;--err:#b3261e;--shadow:0 6px 24px rgba(40,35,20,.08);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101415;--bg2:#171d1f;--card:#1b2123;--ink:#e9e6df;--mut:#98a2a8;--line:#2d3639;--acc:#ff9a55;--acc2:#f2b134;--accink:#2a1000;--warn:#3a2f12;--warnink:#f2d58a;--err:#f2b8b5;--shadow:0 6px 24px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{--bg:#101415;--bg2:#171d1f;--card:#1b2123;--ink:#e9e6df;--mut:#98a2a8;--line:#2d3639;--acc:#ff9a55;--acc2:#f2b134;--accink:#2a1000;--warn:#3a2f12;--warnink:#f2d58a;--err:#f2b8b5;--shadow:0 6px 24px rgba(0,0,0,.35)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:background .25s,color .25s}
+.serif{font-family:Georgia,"Times New Roman",serif}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.bar{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;position:relative}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.brand svg{width:40px;height:40px;flex:none}
+.brand b{font:700 1.3rem Georgia,serif;letter-spacing:.2px;display:block;line-height:1.1}
+.brand small{color:var(--mut);font-size:.72rem;display:none}
+nav{display:flex;gap:4px;background:var(--bg2);padding:4px;border-radius:10px}
+nav button{background:transparent;color:var(--mut);border:0;border-radius:8px;padding:8px 12px;font:600 .88rem inherit;font-family:inherit;cursor:pointer}
+nav button.on{background:var(--card);color:var(--acc);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+nav .ct{background:var(--acc2);color:#1d1500;border-radius:99px;padding:0 7px;font-size:.72rem;margin-left:4px}
+#theme,#cfg{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font-size:1.1rem}
+main{max-width:1180px;margin:0 auto;padding:20px 16px 56px}
+.hero{background:linear-gradient(135deg,#c2561a,#7a2e06 70%);color:#fff;border-radius:16px;padding:22px 20px;margin-bottom:20px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(200,147,47,.35)}
+.hero h1{font:700 1.5rem/1.25 Georgia,serif;margin:0 0 6px;position:relative}
+.hero p{margin:0;opacity:.9;font-size:.95rem;max-width:560px;position:relative}
+.layout{display:grid;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+label{display:block;font-weight:600;font-size:.85rem;margin:0 0 6px}
+input,select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--acc);outline-offset:1px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:12px 16px;background:var(--acc);color:var(--accink);cursor:pointer;width:100%;margin-top:16px}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.sec{background:transparent;color:var(--acc);border:1px solid var(--acc);width:auto;margin:0;padding:8px 14px;font-size:.85rem}
+.btn.dng{color:var(--err);border-color:var(--err)}
+.note{background:var(--warn);color:var(--warnink);border-radius:10px;padding:10px 12px;font-size:.82rem;margin-top:14px}
+.empty{color:var(--mut);text-align:center;padding:36px 12px}
+.empty .ic{font-size:2rem}
+#out p{text-align:justify;text-indent:1.5em;margin:0 0 14px;font-family:Georgia,"Times New Roman",serif;font-size:1.02rem}
+sup a{color:var(--acc);text-decoration:none;font-weight:700}
+.fn{border-top:1px solid var(--line);margin-top:18px;padding-top:12px;font-size:.9rem;font-family:Georgia,serif}
+.fn h3{font:600 .95rem system-ui,sans-serif;margin:0 0 8px}
+.fn ol{padding-left:22px;margin:0}.fn li{margin-bottom:8px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center}
+.save{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:16px}
+.save input{flex:1;min-width:180px}
+.err{color:var(--err)}
+.items{display:grid;gap:14px;margin-top:14px}
+.item h3{font:700 1.08rem Georgia,serif;margin:0 0 2px}
+.item .meta{color:var(--mut);font-size:.78rem;margin-bottom:8px}
+.item .snip{color:var(--mut);font-family:Georgia,serif;font-size:.92rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tag{display:inline-block;background:var(--bg2);border-radius:99px;padding:1px 10px;font-size:.74rem;margin-right:4px}
+.load{text-align:center;padding:40px 12px}
+.ringw{position:relative;width:150px;height:150px;margin:0 auto 14px}
+.ringw svg{width:150px;height:150px;transform:rotate(-90deg)}
+.ringw circle{fill:none;stroke-width:9}
+.ringw .trk{stroke:var(--line)}
+.ringw .bar{stroke:var(--acc);stroke-linecap:round;stroke-dasharray:326.73;stroke-dashoffset:326.73;transition:stroke-dashoffset .3s linear}
+.ringw .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 1.6rem Georgia,serif;color:var(--acc)}
+.load p{margin:0;color:var(--mut);font-size:.92rem}
+.set{border:1px dashed var(--line);border-radius:10px;padding:12px;margin-bottom:16px}
+.set .r{display:flex;gap:8px}.set .r input{flex:1}
+.set .r button{width:auto;margin:0;padding:8px 12px;font-size:.8rem}
+.chk{display:flex;gap:8px;align-items:center;font-weight:400!important;margin:10px 0 0!important}.chk input{width:auto}
+.hint{font-size:.76rem;color:var(--mut);margin-top:6px}.hint a{color:var(--acc)}
+#cfg{position:relative}
+#cfg.need::after{content:"";position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--acc2);border:2px solid var(--card)}
+.pop{position:absolute;right:16px;top:calc(100% + 8px);width:min(350px,calc(100vw - 32px));background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.28);padding:16px;z-index:20}
+.pop .hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.pop .hd b{font:700 1rem Georgia,serif}
+.pop .hd button{background:transparent;border:0;color:var(--mut);font-size:1.1rem;cursor:pointer;padding:4px 8px}
+.pop .set{border:0;padding:0;margin:0}
+@media (max-width:420px){.bar{gap:8px}.brand div{display:none}#theme,#cfg{width:36px;height:36px}}
+/* Penyempurnaan tampilan Safari / macOS */
+:root{color-scheme:light dark}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI",Roboto,system-ui,sans-serif;letter-spacing:-.006em}
+.serif,#out p,.fn,.item h3,.item .snip,.brand b,.hero h1,.pop .hd b,.ringw .pct{font-family:ui-serif,"New York","Iowan Old Style",Georgia,serif}
+::selection{background:var(--acc);color:var(--accink)}
+*{-webkit-tap-highlight-color:transparent}
+header{background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:saturate(180%) blur(18px);backdrop-filter:saturate(180%) blur(18px);border-bottom-color:color-mix(in srgb,var(--line) 70%,transparent)}
+input:not([type=checkbox]),select,textarea,button{-webkit-appearance:none;appearance:none}
+input:not([type=checkbox]),select,textarea{border-radius:12px;line-height:1.4;box-shadow:inset 0 1px 2px rgba(0,0,0,.04);transition:border-color .2s,box-shadow .2s,background .2s}
+textarea{resize:vertical;line-height:1.5}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%238a9199' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:12px 8px;padding-right:38px}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none}
+input:not([type=checkbox]):focus,select:focus,textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 22%,transparent)}
+input[type=checkbox]{accent-color:var(--acc);width:16px;height:16px}
+button{-webkit-user-select:none;user-select:none}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.card{border-radius:20px;border-color:color-mix(in srgb,var(--line) 75%,transparent);box-shadow:0 1px 2px rgba(30,25,10,.05),0 12px 32px -12px rgba(30,25,10,.14)}
+.hero{border-radius:24px}
+.btn{border-radius:12px;box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 8px 18px -8px var(--acc);transition:transform .12s ease,filter .2s ease,box-shadow .2s ease}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:scale(.98)}
+.btn.sec{box-shadow:none;background:transparent}
+.btn.sec:hover{background:color-mix(in srgb,var(--acc) 10%,transparent);filter:none}
+nav{border-radius:12px}
+nav button{transition:background .2s,color .2s,box-shadow .2s}
+#theme,#cfg{border-radius:12px;transition:transform .12s,background .2s}
+#theme:active,#cfg:active{transform:scale(.94)}
+.item{transition:transform .2s ease,box-shadow .2s ease}
+.item:hover{transform:translateY(-3px)}
+.pop{border-radius:18px;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+*{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;border:2px solid var(--bg)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+[hidden]{display:none!important}
+@media (min-width:640px){.brand small{display:block}.hero{padding:30px 32px}.hero h1{font-size:1.9rem}.items{grid-template-columns:1fr 1fr}}
+@media (min-width:980px){
+.layout{grid-template-columns:380px 1fr;align-items:start}
+.sticky{position:sticky;top:90px}
+.items{grid-template-columns:repeat(3,1fr)}
+#view-repo .detail{grid-column:1/-1}
+.card{padding:22px}
+}
+@media (max-width:420px){nav button{padding:8px 9px;font-size:.8rem}.brand b{font-size:1.1rem}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+<div class="brand">
+<svg viewBox="0 0 64 64" aria-label="Logo Pustakata"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0701f"/><stop offset="1" stop-color="#a2410a"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><path d="M8 50h48" stroke="#c8932f" stroke-width="3" stroke-linecap="round"/><text x="32" y="40" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="26" fill="#fff">PK</text><circle cx="50" cy="14" r="4" fill="#c8932f"/></svg>
+<div><b>Pustakata</b><small>Paragraf akademik berbahasa baku</small></div>
+</div>
+<nav><button id="t-gen" class="on">Buat</button><button id="t-repo">Repositori<span class="ct" id="cnt">0</span></button></nav>
+<button id="cfg" title="Pengaturan API Gemini" aria-label="Pengaturan API Gemini" aria-expanded="false">⚙️</button>
+<button id="theme" title="Ganti tema" aria-label="Ganti tema">🌙</button>
+<div id="pop" class="pop" role="dialog" aria-label="Pengaturan API Gemini" hidden><div class="hd"><b>Pengaturan API Gemini</b><button id="popx" type="button" aria-label="Tutup">✕</button></div>
+<div class="set">
+<label for="key">API key Gemini</label>
+<div class="r"><input id="key" type="password" autocomplete="off" placeholder="Tempel API key dari Google AI Studio"><button class="btn sec" id="clrkey" type="button">Hapus</button></div>
+<label for="model" style="margin-top:10px">Model</label>
+<input id="model" list="models" placeholder="gemini-3.8-flash"><datalist id="models"><option value="gemini-3.8-flash"><option value="gemini-3.6-flash"></datalist>
+<label class="chk"><input type="checkbox" id="gr"> Telusuri rujukan dengan Google Search</label>
+<div class="hint">Key disimpan hanya di peramban ini dan dikirim langsung ke Google. Buat key di <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>.</div>
+</div>
+</div>
+</div></header>
+
+<main>
+<section class="hero"><h1>Dari kata kunci menjadi paragraf akademik</h1><p>Tentukan kata kunci dan jumlah paragraf. Pustakata menyusun paragraf baku dengan catatan kaki sesuai gaya pilihan Anda (APA 7, Chicago, MLA, Harvard, IEEE, atau Vancouver), lalu simpan hasilnya di repositori.</p></section>
+
+<div id="view-gen" class="layout">
+<div class="card sticky">
+<label for="kw">Kata kunci</label>
+<textarea id="kw" rows="3" placeholder="contoh: literasi digital, pendidikan dasar, kurikulum merdeka"></textarea>
+<div class="row">
+<div><label for="n">Jumlah paragraf</label><input id="n" type="number" min="1" max="10" value="3"></div>
+<div><label for="len">Panjang</label><select id="len"><option value="3–4 kalimat">Pendek</option><option value="5–6 kalimat" selected>Sedang</option><option value="7–9 kalimat">Panjang</option></select></div>
+</div>
+<div style="margin-top:14px"><label for="sty">Gaya catatan kaki</label><select id="sty"><option value="apa">APA 7 (penulis–tahun)</option><option value="chicago">Chicago 17 (catatan kaki)</option><option value="mla">MLA 9</option><option value="harvard">Harvard</option><option value="ieee">IEEE (numerik)</option><option value="vancouver">Vancouver (numerik)</option></select></div>
+<button class="btn" id="go">Buat Paragraf</button>
+<div class="note">Rujukan disusun dari pengetahuan model, bukan pencarian langsung. Periksa setiap buku atau jurnal (judul, tahun, DOI, dan terutama halaman kutipan) di Google Scholar, Garuda, atau Neliti, lalu uji kemiripan teks sebelum digunakan.</div>
+</div>
+<div>
+<div id="status"></div>
+<div id="load" class="card load" role="status" aria-live="polite" hidden><div class="ringw"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="bar" id="ring" cx="60" cy="60" r="52"/></svg><div class="pct" id="pct">0%</div></div><p id="lmsg">Memulai…</p></div>
+<div id="empty" class="card empty"><div class="ic">📚</div><p>Hasil paragraf akan tampil di sini.</p></div>
+<div id="result" class="card" hidden>
+<div id="out"></div>
+<div class="tools"><button class="btn sec" id="copy">Salin teks</button></div>
+<div class="save"><input id="ttl" placeholder="Judul untuk repositori"><button class="btn sec" id="save">Simpan ke Repositori</button></div>
+<div id="saved" class="note" hidden></div>
+</div>
+</div>
+</div>
+
+<div id="view-repo" hidden>
+<div class="card">
+<label for="q">Cari di repositori</label>
+<input id="q" type="search" placeholder="Cari judul, kata kunci, atau isi paragraf">
+<p class="note" style="margin-bottom:0">Repositori tersimpan di peramban perangkat ini. Menghapus data situs atau berganti perangkat akan menghilangkan isinya.</p>
+</div>
+<div id="items" class="items"></div>
+<div id="detail" class="card detail" style="margin-top:14px" hidden>
+<div id="dout"></div>
+<div class="tools"><button class="btn sec" id="dcopy">Salin teks</button><button class="btn sec" id="dclose">Tutup</button></div>
+</div>
+</div>
+</main>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var KEY="pustakata:repo",TKEY="pustakata:theme",current=null,currentKw="",detail=null;
+
+function ls(get,k,v){try{return get?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}}
+function loadRepo(){try{return JSON.parse(ls(true,KEY)||"[]")||[]}catch(e){return[]}}
+function saveRepo(a){ls(false,KEY,JSON.stringify(a))}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function fmtFn(s){return esc(s).replace(/\*([^*]+)\*/g,"<em>$1</em>")}
+
+/* Tema */
+var root=document.documentElement;
+function isDark(){var t=root.getAttribute("data-theme");return t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches}
+function applyIcon(){$("theme").textContent=isDark()?"☀️":"🌙"}
+var st=ls(true,TKEY);if(st==="dark"||st==="light")root.setAttribute("data-theme",st);
+applyIcon();
+$("theme").addEventListener("click",function(){var t=isDark()?"light":"dark";root.setAttribute("data-theme",t);ls(false,TKEY,t);applyIcon()});
+
+/* Tab */
+function tab(w){
+$("view-gen").hidden=w!=="gen";$("view-repo").hidden=w!=="repo";
+$("t-gen").classList.toggle("on",w==="gen");$("t-repo").classList.toggle("on",w==="repo");
+if(w==="repo")renderRepo();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+$("t-gen").addEventListener("click",function(){tab("gen")});
+$("t-repo").addEventListener("click",function(){tab("repo")});
+
+/* Render paragraf */
+function body(d){
+var h="";
+d.paragraphs.forEach(function(p){h+="<p>"+esc(p).replace(/\[\^(\d+)\]/g,function(m,k){return '<sup><a href="#fn'+k+'">'+k+"</a></sup>"})+"</p>"});
+h+='<div class="fn"><h3>Catatan Kaki'+(d.style?' ('+esc(d.style)+')':'')+'</h3><ol>';
+d.footnotes.slice().sort(function(a,b){return a.n-b.n}).forEach(function(f){h+='<li value="'+f.n+'">'+fmtFn(f.apa)+"</li>"});
+return h+"</ol></div>";
+}
+function plain(d){
+return d.paragraphs.join("\n\n").replace(/\[\^(\d+)\]/g,"[$1]")+"\n\nCatatan Kaki"+(d.style?" ("+d.style+")":"")+"\n"+d.footnotes.map(function(f){return f.n+". "+f.apa.replace(/\*/g,"")}).join("\n");
+}
+function copy(btn,d){
+navigator.clipboard.writeText(plain(d)).then(function(){btn.textContent="Tersalin"},function(){btn.textContent="Gagal menyalin"});
+setTimeout(function(){btn.textContent="Salin teks"},1800);
+}
+
+/* Prompt */
+var STY={
+apa:{label:'APA 7',a:'Di dalam teks, sisipkan kutipan APA 7 (Penulis, Tahun) dan penanda catatan kaki [^1], [^2], dst. tepat setelah kalimat yang dirujuk. Satu rujukan boleh dipakai berulang dengan nomor yang sama.',b:'Setiap catatan kaki berisi entri APA 7 lengkap: Nama belakang, Inisial. (Tahun). Judul artikel dalam huruf kapital kalimat. *Nama Jurnal*, volume(nomor), halaman. DOI/URL. Untuk buku: Nama belakang, Inisial. (Tahun). *Judul buku* (edisi). Penerbit.'},
+chicago:{label:'Chicago 17',a:'Jangan menulis kutipan penulis-tahun di dalam teks; cukup sisipkan penanda catatan kaki [^1], [^2], dst. setelah kalimat yang dirujuk, bernomor berurutan.',b:'Setiap catatan kaki memakai format catatan Chicago 17 (notes-bibliography). Buku: Nama Depan Nama Belakang, *Judul Buku* (Kota: Penerbit, Tahun), halaman. Jurnal: Nama Depan Nama Belakang, “Judul Artikel,” *Nama Jurnal* volume, no. nomor (Tahun): halaman.'},
+mla:{label:'MLA 9',a:'Di dalam teks, sisipkan kutipan MLA (Penulis halaman) tanpa koma, dan penanda catatan kaki [^1], [^2], dst. setelah kalimat yang dirujuk.',b:'Setiap catatan kaki berisi entri MLA 9. Buku: Nama Belakang, Nama Depan. *Judul Buku*. Penerbit, Tahun. Jurnal: Nama Belakang, Nama Depan. “Judul Artikel.” *Nama Jurnal*, vol. x, no. x, Tahun, hlm. xx.'},
+harvard:{label:'Harvard',a:'Di dalam teks, sisipkan kutipan Harvard (Penulis Tahun) dan penanda catatan kaki [^1], [^2], dst. setelah kalimat yang dirujuk.',b:'Setiap catatan kaki berisi entri Harvard. Buku: Nama belakang, Inisial. (Tahun) *Judul buku*. Kota: Penerbit. Jurnal: Nama belakang, Inisial. (Tahun) Judul artikel. *Nama Jurnal*, volume(nomor), hlm. xx.'},
+ieee:{label:'IEEE',a:'Jangan menulis kutipan penulis-tahun; gunakan hanya penanda numerik [^1], [^2], dst., bernomor sesuai urutan kemunculan pertama.',b:'Setiap catatan kaki memakai format IEEE. Jurnal: Inisial. Nama belakang, “Judul artikel,” *Nama Jurnal*, vol. x, no. x, hlm. xx, Bulan Tahun. Buku: Inisial. Nama belakang, *Judul Buku*, edisi. Kota: Penerbit, Tahun.'},
+vancouver:{label:'Vancouver',a:'Jangan menulis kutipan penulis-tahun; gunakan hanya penanda numerik [^1], [^2], dst., bernomor sesuai urutan kemunculan pertama.',b:'Setiap catatan kaki memakai format Vancouver. Jurnal: Nama belakang Inisial. Judul artikel. Nama Jurnal. Tahun;volume(nomor):halaman. Buku: Nama belakang Inisial. Judul buku. Edisi. Kota: Penerbit; Tahun.'}
+};
+function buildPrompt(kw,n,len,sk){var s=STY[sk]||STY.apa;
+return "Anda adalah penulis akademik Indonesia. Tulis "+n+" paragraf mengenai kata kunci berikut: "+kw+".\n\nAturan:\n1. Gunakan bahasa Indonesia baku sesuai PUEBI/EYD dan kaidah kalimat efektif; hindari bahasa gaul.\n2. Setiap paragraf terdiri atas "+len+", dengan kalimat topik, pengembang, dan penutup; antarparagraf runtut.\n3. Parafrasekan dengan susunan kalimat orisinal; jangan menyalin kutipan langsung yang panjang agar kemiripan teks minimal.\n4. Rujukan hanya dari buku atau artikel jurnal berbahasa Indonesia yang benar-benar Anda yakini keberadaannya. Jangan mengarang. Jika tidak yakin pada DOI atau URL, jangan mencantumkannya.\n5. "+s.a+"\n6. "+s.b+"\n7. Setiap catatan kaki WAJIB memuat halaman kutipan, yaitu halaman spesifik tempat gagasan yang dirujuk berada (contoh: hlm. 45 atau hlm. 45–47), sesuai ketentuan gaya yang dipilih. Pada gaya penulis–tahun, cantumkan juga halaman pada kutipan di dalam teks, misalnya (Penulis, 2020, hlm. 45). Hanya tulis halaman yang Anda yakini; jika tidak yakin, tulis hlm. [periksa] dan jangan mengarang angka.\n\nKeluarkan HANYA JSON valid tanpa teks lain: {\"paragraphs\":[\"teks dengan [^1]\"],\"footnotes\":[{\"n\":1,\"apa\":\"entri APA\"}]}";
+}
+function parse(t){
+var s=t.indexOf("{"),e=t.lastIndexOf("}");if(s<0||e<0)throw new Error("format");
+var d=JSON.parse(t.slice(s,e+1));
+if(!Array.isArray(d.paragraphs)||!Array.isArray(d.footnotes))throw new Error("format");
+return d;
+}
+function titleFrom(kw){var t=kw.split(/[,;\n]/)[0].trim();return t?t.charAt(0).toUpperCase()+t.slice(1):"Tanpa judul"}
+
+async function callGemini(key,model,prompt,ground){
+var body={contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{}};
+if(ground)body.tools=[{google_search:{}}];else body.generationConfig.responseMimeType="application/json";
+var res;
+try{res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(String(model).replace(/^models\//,""))+":generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify(body)})}catch(e){throw{code:"network"}}
+var data=await res.json().catch(function(){return{}});
+if(!res.ok){throw{code:res.status===429?"rate_limited":(res.status===400||res.status===403)?"bad_key":"api",message:(data.error&&data.error.message)||("HTTP "+res.status)}}
+var c=data.candidates&&data.candidates[0];
+var t=c&&c.content&&c.content.parts?c.content.parts.map(function(p){return p.text||""}).join(""):"";
+if(!t)throw{code:"empty"};
+return{text:t};
+}
+function errMsg(e){var c=e&&e.code,m=e&&e.message?" ("+esc(String(e.message).slice(0,160))+")":"";
+if(c==="rate_limited")return "Kuota atau batas kecepatan API Gemini tercapai. Tunggu sebentar atau periksa kuota di Google AI Studio.";
+if(c==="bad_key")return "API key atau nama model ditolak"+m+".";
+if(c==="network")return "Tidak dapat terhubung ke Google. Periksa koneksi internet Anda.";
+if(c==="empty")return "Gemini tidak mengembalikan teks. Coba lagi atau ganti model.";
+return "Terjadi kesalahan saat menyusun atau membaca hasil. Silakan coba lagi."+(c==="api"?m:"");}
+var lt=null,lp=0,wait=false,nextOk=0;
+function setRing(p){$("ring").style.strokeDashoffset=326.73*(1-p/100);$("pct").textContent=Math.round(p)+"%";if(!wait)$("lmsg").textContent=p<25?"Menganalisis kata kunci…":p<55?"Menyusun paragraf baku…":p<80?"Menelusuri rujukan dan halaman kutipan…":"Merapikan catatan kaki…"}
+function startLoad(){lp=0;setRing(0);$("load").hidden=false;clearInterval(lt);lt=setInterval(function(){lp+=(94-lp)*0.035;setRing(lp)},250)}
+function stopLoad(){clearInterval(lt);$("load").hidden=true}
+/* Generate */
+$("go").addEventListener("click",async function(){
+var go=this,kw=$("kw").value.trim(),n=parseInt($("n").value,10),status=$("status");
+if(!kw){status.innerHTML='<p class="err">Kata kunci belum diisi.</p>';return}
+if(!(n>=1&&n<=10)){status.innerHTML='<p class="err">Jumlah paragraf harus 1 sampai 10.</p>';return}
+if(Date.now()<nextOk){status.innerHTML='<p class="err">Mohon tunggu '+Math.ceil((nextOk-Date.now())/1000)+' detik sebelum membuat paragraf lagi.</p>';return}
+status.innerHTML="";$("result").hidden=true;$("empty").hidden=true;$("saved").hidden=true;
+go.disabled=true;go.textContent="Menyusun paragraf…";startLoad();
+try{
+var key=$("key").value.trim();
+if(!key){status.innerHTML='<p class="err">Masukkan API key Gemini terlebih dahulu melalui ikon ⚙️ di pojok kanan atas.</p>';openPop();$("empty").hidden=false;return}
+var r=await callGemini(key,$("model").value.trim()||"gemini-3.8-flash",buildPrompt(kw,n,$("len").value,$("sty").value),$("gr").checked);
+current=parse(r.text);current.style=(STY[$("sty").value]||STY.apa).label;currentKw=kw;
+$("out").innerHTML=body(current);$("ttl").value=titleFrom(kw);$("result").hidden=false;
+$("result").scrollIntoView({behavior:"smooth",block:"start"});
+}catch(err){
+$("empty").hidden=false;
+status.innerHTML='<p class="err">'+errMsg(err)+'</p>';
+}finally{wait=false;nextOk=Date.now()+8000;stopLoad();go.disabled=false;go.textContent="Buat Paragraf"}
+});
+$("copy").addEventListener("click",function(){if(current)copy(this,current)});
+
+/* Simpan */
+$("save").addEventListener("click",function(){
+if(!current)return;
+var a=loadRepo();
+a.unshift({id:Date.now().toString(36),title:$("ttl").value.trim()||titleFrom(currentKw),kw:currentKw,date:new Date().toISOString(),data:current});
+saveRepo(a);updateCount();
+var s=$("saved");s.textContent="Tersimpan di repositori.";s.hidden=false;
+});
+function updateCount(){$("cnt").textContent=loadRepo().length}
+
+/* Repositori */
+function renderRepo(){
+var q=$("q").value.trim().toLowerCase(),a=loadRepo(),box=$("items");
+var list=a.filter(function(x){return !q||(x.title+" "+x.kw+" "+x.data.paragraphs.join(" ")).toLowerCase().indexOf(q)>-1});
+if(!list.length){box.innerHTML='<div class="card empty" style="grid-column:1/-1"><div class="ic">🗂️</div><p>'+(a.length?"Tidak ada hasil yang cocok.":"Repositori masih kosong. Buat paragraf lalu simpan di sini.")+"</p></div>";return}
+box.innerHTML=list.map(function(x){
+var d=new Date(x.date).toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"});
+return '<div class="card item"><h3>'+esc(x.title)+'</h3><div class="meta">'+d+" · "+x.data.paragraphs.length+' paragraf</div><div style="margin-bottom:8px">'+x.kw.split(/[,;\n]/).slice(0,3).map(function(k){return k.trim()?'<span class="tag">'+esc(k.trim())+"</span>":""}).join("")+'</div><div class="snip">'+esc(x.data.paragraphs[0].replace(/\[\^\d+\]/g,""))+'</div><div class="tools"><button class="btn sec" data-a="open" data-id="'+x.id+'">Buka</button><button class="btn sec" data-a="copy" data-id="'+x.id+'">Salin</button><button class="btn sec dng" data-a="del" data-id="'+x.id+'">Hapus</button></div></div>';
+}).join("");
+}
+$("q").addEventListener("input",renderRepo);
+$("items").addEventListener("click",function(e){
+var b=e.target.closest("button");if(!b)return;
+var id=b.getAttribute("data-id"),act=b.getAttribute("data-a"),a=loadRepo();
+var it=a.filter(function(x){return x.id===id})[0];if(!it)return;
+if(act==="open"){detail=it.data;$("dout").innerHTML='<h2 class="serif" style="margin-top:0">'+esc(it.title)+"</h2>"+body(it.data);$("detail").hidden=false;$("detail").scrollIntoView({behavior:"smooth",block:"start"})}
+else if(act==="copy"){copy(b,it.data)}
+else if(act==="del"){
+if(b.getAttribute("data-c")!=="1"){b.setAttribute("data-c","1");b.textContent="Yakin hapus?";setTimeout(function(){b.removeAttribute("data-c");b.textContent="Hapus"},2500);return}
+saveRepo(a.filter(function(x){return x.id!==id}));updateCount();$("detail").hidden=true;renderRepo();
+}
+});
+$("dcopy").addEventListener("click",function(){if(detail)copy(this,detail)});
+$("dclose").addEventListener("click",function(){$("detail").hidden=true});
+updateCount();
+var kEl=$("key"),mEl=$("model"),gEl=$("gr");
+kEl.value=ls(true,"pustakata:key")||"";var sm=ls(true,"pustakata:model");mEl.value=(!sm||sm.indexOf("gemini-2.5")===0)?"gemini-3.8-flash":sm;ls(false,"pustakata:model",mEl.value);gEl.checked=ls(true,"pustakata:gr")==="1";
+kEl.addEventListener("input",function(){ls(false,"pustakata:key",kEl.value.trim())});
+mEl.addEventListener("input",function(){ls(false,"pustakata:model",mEl.value.trim())});
+gEl.addEventListener("change",function(){ls(false,"pustakata:gr",gEl.checked?"1":"0")});
+$("clrkey").addEventListener("click",function(){kEl.value="";try{localStorage.removeItem("pustakata:key")}catch(e){}});
+var pop=$("pop"),cfg=$("cfg");
+function openPop(){pop.hidden=false;cfg.setAttribute("aria-expanded","true")}
+function closePop(){pop.hidden=true;cfg.setAttribute("aria-expanded","false")}
+function needMark(){cfg.classList.toggle("need",!kEl.value.trim())}
+cfg.addEventListener("click",function(e){e.stopPropagation();if(pop.hidden)openPop();else closePop()});
+pop.addEventListener("click",function(e){e.stopPropagation()});
+document.addEventListener("click",closePop);
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closePop()});
+$("popx").addEventListener("click",closePop);
+kEl.addEventListener("input",needMark);$("clrkey").addEventListener("click",needMark);needMark();
+})();
+</script>
+</body>
+</html>
